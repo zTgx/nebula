@@ -1,0 +1,37 @@
+A fundamental building block of a GPU is the Streaming Multiprocessor (SM). Each SM contains multiple CUDA cores, also referred to as streaming processors (SPs), which are capable of executing instructions. Typically, an SM can execute a large number of threads concurrently. The architecture of an SM also includes other critical components such as warp schedulers, special-function units (SFUs), and load/store units.
+
+a warp is a basic unit of execution in an SM consisting of 32 threads.
+a block is scheduled on an SM and can be divided into multiple warps.
+A grid represents the total number of threads required for a task and is composed of many blocks.
+
+In CUDA, computations are expressed as kernels, which are functions executed on the GPU, where each thread runs an instance of the kernel. 
+
+A block is a group of threads that execute on the same SM.
+A grid is a collection of blocks that execute the same kernel function.
+
+In CUDA, computations are expressed as kernels, which are functions executed on the GPU
+
+Developers must learn to partition tasks efficiently, avoid memory contention, and utilize the memory hierarchy to their advantage, contrasting significantly with traditional CPU programming paradigms.
+
+a model known as Single Instruction, Multiple Threads (SIMT).
+
+Each block can contain up to 1024 threads, with this limit varying based on the compute capability of the GPU.
+
+A warp is a group of 32 threads that execute the same instruction at the same time. This is the basic unit of execution and scheduling in CUDA’s Single Instruction, Multiple Threads (SIMT) architecture.
+
+To minimize thread divergence, it is beneficial to structure the code to ensure that threads within a warp follow the same execution path.
+
+Each thread is assigned a unique identifier that it uses to execute code and access memory. 
+
+the built-in variables like threadIdx, blockIdx, and blockDim.
+
+```
+// The calculation of idx yields the global index of each thread, which is a unique identifier.
+int idx = blockIdx.x * blockDim.x + threadIdx.x; // Calculate global index 
+```
+
+
+```
+__shared__ float s_data[BLOCK_SIZE]; 
+__constant__ float const_data[64];
+```

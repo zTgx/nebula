@@ -43,6 +43,16 @@ void cublasExample() {
    cudaFree(d_C); 
 }
 
+__global__ void addx(int *a, int *b, int *c) {
+   *c = *a + *b;
+
+   // This function acts as a barrier at which all threads in a block must wait until every thread reaches that point in the code. 
+   __syncthreads();
+
+   // __syncthreads(); // Ensure all additions are complete before writing back 
+
+}
+
 int main() {
     // Get device info
     cudaDeviceProp prop;
@@ -95,5 +105,10 @@ int main() {
     cublasExample();
     std::cout << "cuBLAS example completed.\n";
     
-    return 0;
+   cudaError_t err = cudaGetLastError(); 
+   if (err != cudaSuccess) { 
+      printf("CUDA Kernel launch failed: %s\n", cudaGetErrorString(err)); 
+   }
+
+   return 0;
 }

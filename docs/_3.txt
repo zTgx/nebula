@@ -1,0 +1,14 @@
+CUDA kernel
+
+---
+
+A CUDA kernel is a function written in C++, augmented with CUDA-specific extensions, that runs on the GPU rather than the CPU.
+
+When a CUDA kernel is called, it is executed N times in parallel by N different threads, as opposed to a standard C++ function which is executed once on the calling thread. 
+
+kernel_function<<<num_blocks, num_threads_per_block, shared_mem_bytes, stream>>>(kernel parameters);
+
+
+Bank conflict:
+Shared memory is divided into equally sized memory modules, called banks, that allow multiple simultaneous accesses as long as there are no conflicts. If multiple threads access different memory banks simultaneously, the accesses can be serviced in parallel. However, if multiple threads access the same memory bank, a bank conflict occurs, which serializes the accesses and reduces performance.
+
