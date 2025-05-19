@@ -53,6 +53,7 @@ int main() {
     // Launch 4 parallel thread blocks
     // The first 2 indicates that the kernel will be launched with 2 blocks.
     // The second 2 indicates that each block will contain 2 threads.
+    // <numBlocks, threadsPerBlock>
     kernel<<<2, 2>>>();
 
     // ensures the CPU waits for the GPU to complete execution before terminating the program.

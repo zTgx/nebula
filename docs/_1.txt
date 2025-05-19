@@ -34,4 +34,61 @@ profiling tools like nvprof and Nsight Systems.
 cuBLAS (CUDA Basic Linear Algebra Subprograms) and 
 cuDNN (CUDA Deep Neural Network library) 
 
+concepts:
+1. CUDA Architecture: CUDA (Compute Unified Device Architecture) is NVIDIA’s parallel computing platform and application programming interface (API).
+
+2. Kernel: A kernel is a function written in CUDA C++ that runs on the GPU.
+
+3. Thread Hierarchy: CUDA uses a hierarchy of threads to manage the execution of parallel tasks:
+> Thread: The smallest unit of execution in CUDA.
+> Block: A group of threads that execute the same kernel and can cooperate through shared memory. Threads within a block can synchronize using __syncthreads.
+> Grid: A collection of blocks that execute the same kernel. An entire grid of blocks can be launched from the host (CPU) side.
+
+4. Memory Hierarchy: The memory hierarchy in CUDA is vitally important to understanding performance optimization. CUDA provides several types of memory, each with different performance characteristics and use cases:
+
+> Global Memory: The largest memory space available, accessible by all threads. It is off-chip and has high latency.
+> Shared Memory: On-chip memory accessible by all threads within the same block. It has much lower latency compared to global memory.
+> Local Memory: Memory used for variables that are private to each thread. It is stored off-chip and has similar latency to global memory.
+> Constant Memory: Read-only memory for storing constant data that does not change over the duration of kernel execution. It has cached access, which provides faster access than global memory if the data access patterns exhibit spatial locality.
+
+> Texture Memory: Cached read-only memory, particularly beneficial for spatially localized memory access patterns. It provides advantages for specific operations like texture mapping in graphics and certain computational patterns.
+
+5. Warp: A warp is a group of 32 threads that are executed simultaneously on an SM. 
+
+6. Thread Divergence: Thread divergence occurs when threads within a single warp take different execution paths.
+
+7. Synchronization: Synchronization is crucial in CUDA when threads within a block need to coordinate or ensure that certain operations have completed before progressing. CUDA provides the __syncthreads() function to synchronize threads within a block.
+
+8. Execution Configuration: When launching a kernel, the developer specifies the execution configuration, defining the grid and block dimensions. 
+
+9. Streams: CUDA streams are sequences of operations that execute in order on the GPU. Streams enable overlapping computation and data transfer between the host and device or multiple kernel executions. The default stream is stream 0, which serializes operations.
+
+10. Event: Events are used to measure the time taken by CUDA operations. 
+
+```c++
+cudaEvent_t start, stop; 
+cudaEventCreate(&start); 
+cudaEventCreate(&stop); 
+cudaEventRecord(start, 0); 
+ 
+// Kernel call 
+simpleKernel<<<numBlocks, threadsPerBlock>>>(d_array); 
+ 
+cudaEventRecord(stop, 0); 
+cudaEventSynchronize(stop); 
+ 
+float elapsedTime; 
+cudaEventElapsedTime(&elapsedTime, start, stop);
+```
+
+
+A simple CUDA program consists of code that runs on the host (usually C++) and kernels that run on the device.
+
+>>>>
+
+cuBLAS: An optimized library for dense linear algebra, implementing many standard Basic Linear Algebra Subprograms (BLAS).
+cuFFT: Provides functionalities for performing Fast Fourier Transforms, useful in signal processing and related fields.
+cuRAND: A library for generating high-quality random numbers, aiding in simulations and Monte Carlo methods.
+Thrust: A parallel algorithm library resembling the C++ Standard Template Library (STL), making it easier to develop high-performance CUDA code.
+
 
