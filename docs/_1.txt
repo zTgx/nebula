@@ -1,0 +1,37 @@
+Key to leveraging the full power of CUDA is understanding the GPU architecture.
+
+NVIDIA GPUs are comprised of Streaming Multiprocessors (SMs). 
+Each SM can manage multiple threads concurrently, making GPUs exceptionally suitable for data-parallel computations where the same operation is applied to multiple data items. 
+
+For instance, matrix multiplication, image processing, and physical simulations often benefit from GPU acceleration.
+
+A typical CUDA-enabled GPU contains many SMs, each of which can execute thousands of threads. These threads are organized into blocks, which themselves are organized into grids. 
+
+Each block runs on a single SM, allowing threads within the block to share data through fast shared memory and synchronize their execution.
+
+Memory hierarchy in CUDA consists of several layers:
+
+1. Global Memory: Accessible by all the threads which have high latency and is uncached.
+2. Shared Memory: On-chip memory shared among threads of the same block, much faster than global memory.
+3. Registers: Each thread has its private registers, providing the fastest but limited memory.
+4. Constant and Texture Memory: Cached memories optimized for different access patterns.
+
+---
+
+
+three key aspects often come to the forefront:
+
+1. Massive Parallelism: GPUs consist of hundreds or thousands of smaller, more efficient cores designed for handling multiple tasks simultaneously.
+2. High Throughput: Due to their architecture, GPUs can process vast amounts of data per time unit.
+3. Energy Efficiency: Modern GPUs deliver high computational power with lower energy consumption compared to traditional CPUs.
+
+---
+
+tools:
+nvcc (NVIDIA CUDA Compiler), 
+cuda-gdb (CUDA Debugger), and 
+profiling tools like nvprof and Nsight Systems. 
+cuBLAS (CUDA Basic Linear Algebra Subprograms) and 
+cuDNN (CUDA Deep Neural Network library) 
+
+
