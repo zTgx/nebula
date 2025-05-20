@@ -1,0 +1,5 @@
+The fundamental concept behind parallel programming models is the decomposition of computational tasks into sub-tasks that can be executed concurrently. This decomposition is generally classified into three primary types: 
+> task parallelism, 
+> data parallelism, 
+> and domain decomposition.
+
