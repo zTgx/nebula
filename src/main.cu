@@ -1,14 +1,38 @@
 #include <iostream>
-#include <cuda_runtime.h> 
+#include <cublas_v2.h> 
+#include "cuda_error_check.h"
+#include <thrust/device_vector.h>
+
+__device__ int multiply(int x, int y) {
+   return x * y;
+}
 
 // The __global__ qualifier indicates that this function runs on the device (GPU) and can be called from the host (CPU).
 // __global__ declaration specifier, marking it as a function that runs on the GPU but can be called from the host and executed in parallel.
+
+//1. must return void
+//2. must have a unique name
+//3. must be declared with the __global__ qualifier
+//4. must be called from the host code using the <<<...>>> syntax, which specifies the number of blocks and threads per block.
+//5. can take arguments, but they must be pointers to device memory or built-in types (like int, float, etc.).
+//6. can use built-in variables like threadIdx, blockIdx, blockDim, and gridDim to determine the thread and block indices.
+//7. can use synchronization functions like __syncthreads() to coordinate threads within a block.
 __global__ void kernel() {
 
     // threadIdx.x is a built-in variable in CUDA that provides the thread ID within a block. 
     // blockIdx.x is a built-in variable that provides the block ID within the grid.
     printf("Hello from GPU thread %d in block %d\n", 
            threadIdx.x, blockIdx.x);
+
+   
+   // calc thread id 
+   int thread_id = blockIdx.x * blockDim.x + threadIdx.x;
+   printf("Thread ID: %d\n", thread_id);
+
+   // call device function
+   int x = 2, y = 3;
+   int result = multiply(x, y);
+   printf("Multiplication result: %d\n", result);
 }
 
 #define N 512 
@@ -18,8 +42,6 @@ __global__ void add(int *a, int *b, int *c) {
    c[index] = a[index] + b[index]; 
 } 
 
-#include <cublas_v2.h> 
- 
 void cublasExample() { 
    cublasHandle_t handle; 
    cublasCreate(&handle); 
@@ -28,6 +50,7 @@ void cublasExample() {
    float beta = 0.0f; 
    int NN = 1024;
  
+   // using d_ as a prefix to indicate that these variables are device pointers.
    float* d_A; 
    float* d_B; 
    float* d_C; 
@@ -59,6 +82,8 @@ int main() {
     cudaGetDeviceProperties(&prop, 0);
     
     std::cout << "Launching on: " << prop.name << "\n";
+
+    thrust::device_vector<int> data(N);
     
     // Launch 4 parallel thread blocks
     // The first 2 indicates that the kernel will be launched with 2 blocks.
@@ -75,7 +100,9 @@ int main() {
     int *d_a, *d_b, *d_c; 
   
     // allocates memory on the GPU.
-    cudaMalloc((void **) &d_a, N * sizeof(int)); 
+    cudaError_t mallocErr = cudaMalloc((void **) &d_a, N * sizeof(int)); 
+    checkCudaErrors(mallocErr);
+
     cudaMalloc((void **) &d_b, N * sizeof(int)); 
     cudaMalloc((void **) &d_c, N * sizeof(int)); 
   
@@ -100,10 +127,10 @@ int main() {
   
     cudaFree(d_a); cudaFree(d_b); cudaFree(d_c); 
 
-    std::cout << "CUDA example completed.\n";
+   //  std::cout << "CUDA example completed.\n";
 
-    cublasExample();
-    std::cout << "cuBLAS example completed.\n";
+   //  cublasExample();
+   //  std::cout << "cuBLAS example completed.\n";
     
    cudaError_t err = cudaGetLastError(); 
    if (err != cudaSuccess) { 
