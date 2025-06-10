@@ -2,6 +2,7 @@
 #include <cublas_v2.h> 
 #include "cuda_error_check.h"
 #include <thrust/device_vector.h>
+#include "handle.hpp"
 
 __device__ int multiply(int x, int y) {
    return x * y;
@@ -77,6 +78,11 @@ __global__ void addx(int *a, int *b, int *c) {
 }
 
 int main() {
+
+   // thread
+   const std::string info = "CUDA example";
+   handle_joins(info);
+
     // Get device info
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, 0);
