@@ -1,14 +1,13 @@
 #include <iostream>
-#include "mem.hpp"
+#include <boost/asio.hpp>
+#include "server.hpp"
 
 int main() {
-    std::cout << "main()\n";
-    X xm{ "main()" };
-    g();
+    std::cout << "Server started on port 12345" << std::endl;
+   
+    boost::asio::io_context io_context;
+    Server server(io_context, 12345);
+    io_context.run();
 
-    X* p = new X{ "new X" };
-    delete p;
-
-    std::cout << "end of main()\n";
     return 0;
 }

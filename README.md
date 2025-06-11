@@ -1,3 +1,29 @@
+## nebula
+
+### pre-required
+* CUDA
+* Boost
+* CMake
+* C++17+
+
+### Starter
+```bash
+mkdir build && cd build
+cmake .. && make
+
+./nebula
+```
+
+```bash
+curl -X POST http://localhost:12345/compute -H "Content-Type: application/json" -d '{
+    "task": "matrix_multiply",
+    "data": {
+        "matrix_a": [[1.0, 2.0], [3.0, 4.0]],
+        "matrix_b": [[5.0, 6.0], [7.0, 8.0]]
+    }
+}'
+```
+
 # nvidia-smi
 ```shell
 Mon May 19 09:56:03 2025       
