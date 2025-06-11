@@ -19,11 +19,16 @@ cmake_policy(SET CMP0167 NEW)  # 使用新的Boost查找机制
 find_package(CUDAToolkit REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread)
 
-# 使用GLOB查找所有的.cu文件
+# Collect all C++/C/CUDA source files
+file(GLOB CPP_SOURCES "src/*.cpp" "src/*.cc" "src/*.cxx" "src/*.C")
+file(GLOB C_SOURCES "src/*.c")
 file(GLOB CUDA_SOURCES "src/*.cu")
 
+# Combine all sources
+set(ALL_SOURCES ${CPP_SOURCES} ${C_SOURCES} ${CUDA_SOURCES})
+
 # 添加可执行文件，并更改名称为${PROJECT_NAME}
-add_executable(${PROJECT_NAME} ${CUDA_SOURCES})
+add_executable(${PROJECT_NAME} ${ALL_SOURCES})
 
 # 添加头文件包含路径
 target_include_directories(${PROJECT_NAME} PUBLIC
