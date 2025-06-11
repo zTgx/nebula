@@ -22,6 +22,22 @@ curl -X POST http://localhost:12345/compute -H "Content-Type: application/json" 
         "matrix_b": [[5.0, 6.0], [7.0, 8.0]]
     }
 }'
+
+curl -X POST http://localhost:8080/compute -H "Content-Type: application/json" -d '{
+    "task": "matrix_vector_multiply",
+    "data": {
+        "matrix_a": [[1.0, 2.0], [3.0, 4.0]],
+        "vector_x": [5.0, 6.0]
+    }
+}'
+
+curl -X POST http://localhost:8080/compute -H "Content-Type: application/json" -d '{
+    "task": "vector_dot",
+    "data": {
+        "vector_x": [1.0, 2.0, 3.0],
+        "vector_y": [4.0, 5.0, 6.0]
+    }
+}'
 ```
 
 # nvidia-smi

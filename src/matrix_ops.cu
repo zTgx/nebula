@@ -3,13 +3,10 @@
 #include "cuda_engine.hpp"
 
 
-void CudaEngine::matrix_multiply(const float* a, const float* b, float* c, int m, int n, int k) {
-    // cublasHandle_t handle;
-    // cublasCreate(&handle);
-    // const float alpha = 1.0f, beta = 0.0f;
-    // cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, n, m, k, &alpha, b, n, a, k, &beta, c, n);
-    // cublasDestroy(handle);
-}
+// void CudaEngine::matrix_multiply(const float* a, const float* b, float* c, int m, int n, int k) {
+//     const float alpha = 1.0f, beta = 0.0f;
+//     cublasSgemm(cublas_handle_, CUBLAS_OP_N, CUBLAS_OP_N, n, m, k, &alpha, b, n, a, k, &beta, c, n);
+// }
 
 // #include <iostream>
 // #include <cublas_v2.h> 
